@@ -1,4 +1,5 @@
-import { loadData, loadFavorites, saveFavorites } from "./data.js";
+import {loadFavorites, saveFavorites } from "./data.js";
+import { loadData } from "./api.js";
 
 //action
 let showsData = await loadData();

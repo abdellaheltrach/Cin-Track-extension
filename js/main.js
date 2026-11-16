@@ -1,10 +1,10 @@
-import { loadData } from "./data.js";
+import { loadData } from "./api.js";
 import { handleFilter, renderCards } from "./ui.js";
 
 
 let data = await loadData();
 
-// console.log(data);
+console.log(data);
 
 renderCards(data, 1, 8);
 
