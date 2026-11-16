@@ -1,8 +1,8 @@
-import {loadFavorites, saveFavorites } from "./data.js";
-import { loadData } from "./api.js";
+import { loadFavorites, saveFavorites } from "./data.js";
+import { getShows } from "./api.js";
 
 //action
-let showsData = await loadData();
+let showsData = await getShows();
 
 let currentPage = 1;
 let currentSize = 6;
@@ -13,7 +13,7 @@ window.closeModel = function () {
 };
 
 //calback function
- function renderList(items, cardTemplateCallback) {
+function renderList(items, cardTemplateCallback) {
   return items.map(cardTemplateCallback).join("");
 }
 
@@ -199,7 +199,7 @@ export function rederPagination(showsTable, courantPage, pageSize) {
 }
 
 export async function handleFilter() {
-  let shows = await loadData();
+  let shows = await getShows();
 
   const serchInput = document.getElementById("search");
   const statusSelector = document.getElementById("filter");
