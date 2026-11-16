@@ -30,5 +30,21 @@ export async function getShowById(id) {
   }
 }
 
+export async function addShowById(newShow) {
+  try {
+    let response = await fetch(shows_Url, {
+      method: "POST",
+      "Content-Type": "application/json",
+      body: JSON.stringify(newShow),
+    });
 
+    if (!response.ok) {
+      throw new Error("error loading the data");
+    }
+    let data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("error adding new show ", error);
+  }
+}
 
