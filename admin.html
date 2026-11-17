@@ -27,7 +27,7 @@
     <header
       class="max-w-7xl mx-auto px-2 border-b-2 mb-[8px] border-[#35353d] h-[80px] flex flex-row justify-between items-center"
     >
-      <a href="/Index.html">
+      <a href="/index.html">
         <img
           class="h-[80px] block md:hidden"
           src="/img/Phone Logo.png"
@@ -58,122 +58,38 @@
         </svg>
       </button>
     </header>
-    <div
-      class="max-w-7xl mx-auto px-2 grid grid-cols-1  lg:grid-cols-12 gap-4 min-h-[calc(100vh-88px)]"
+<div
+      class="max-w-7xl mx-auto px-2 grid grid-cols-1 lg:grid-cols-12 gap-4 min-h-[calc(100vh-88px)]"
     >
-      <main class="lg:col-span-9 grid grid-cols-8 gap-4 content-start py-4 order-2 lg:order-1">
-        <div class="col-span-full">
-          <div class="flex items-center">
-            <button class="relative flex items-center hover:cursor-pointer">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="absolute left-4"
-              >
-                <path d="m21 21-4.34-4.34" />
-                <circle cx="11" cy="11" r="8" />
-              </svg>
-            </button>
-
-            <input
-              id="search"
-              class="bg-[#27272c] pl-12 h-12 w-full rounded-full mr-2"
-              type="search"
-              name="search"
-              placeholder="Rechercher sur une Films ou Series"
-            />
-            <select
-              class="bg-[#27272c] w-28 px-6 h-12 rounded-full cursor-pointer"
-              name="filter"
-              id="filter"
-            >
-              <option value="Tout">Tout</option>
-              <option value="Films">Films</option>
-              <option value="Series">Series</option>
-            </select>
-          </div>
+      <main class="lg:col-span-12 py-4">
+        <div class="flex justify-between items-center mb-6">
+          <h1 class="text-2xl">Gestion du catalogue</h1>
         </div>
+
+        <div id="status-message" class="hidden text-center py-8 text-lg"></div>
+
         <div
-          id="cardsContainer"
-          class="col-span-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-        ></div>
-        <div
-          id="pagination"
-          ;
-          class="rounded-xl col-span-full flex flex-wrap justify-center items-center gap-4"
+          id="table-container"
+          class="overflow-x-auto bg-[#1c1c20] rounded-lg border border-[#35353d] hidden"
         >
-          <div class="flex flex-row justify-center items-center gap-3 w-full">
-            <button class="rounded-[12px] px-4 py-2 bg-[#0C1E4A]/40 text-white">
-              1
-            </button>
-
-            <button
-              class="hover:cursor-pointer rounded-[12px] px-4 py-2 bg-[#E7E5E4] text-black"
-            >
-              2
-            </button>
-
-            <button
-              class="hover:cursor-pointer rounded-[12px] px-4 py-2 bg-[#E7E5E4] text-black"
-            >
-              3
-            </button>
-            <button
-              class="hover:cursor-pointer rounded-[12px] px-4 py-2 bg-[#E7E5E4] text-black"
-            >
-              &gt;
-            </button>
-          </div>
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-[#35353d] bg-[#25252b] text-gray-300 text-sm uppercase">
+                <th class="py-3 px-4">Image</th>
+                <th class="py-3 px-4">Titre</th>
+                <th class="py-3 px-4">Type</th>
+                <th class="py-3 px-4">Année</th>
+                <th class="py-3 px-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="content-tbody" class="divide-y divide-[#35353d]">
+            </tbody>
+          </table>
         </div>
       </main>
-      <aside class="lg:col-span-3 border-l-2 border-[#35353d] h-full order-1 lg:order-2">
-        <h2 class="text-xl px-4">Favorites:</h2>
-        <div id="favorite-container" ></div>
-      </aside>
-    </div>
-    <!-- model -->
-    <div
-      id="modal"
-      class="hidden fixed inset-0 z-50 flex items-center justify-center bg-[#121214]/70 backdrop-blur"
-      onclick="closeModel()"
-    >
-      <div
-        class="relative bg-[#27272c] border border-[#35353d] rounded-2xl w-full max-w-[800px] p-6 mx-4"
-        id="modal-content"
-        onclick="event.stopPropagation()"
-      >
-        <!-- 'X' Close Button -->
-        <button
-          id="closeModalBtn"
-          class="absolute top-4 right-4 text-gray-400 hover:text-white hover:bg-[#35353d] p-1.5 rounded-full transition-colors cursor-pointer"
-          onclick="closeModel()"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M18 6 6 18" />
-            <path d="m6 6 12 12" />
-          </svg>
-        </button>
-
-      </div>
     </div>
 
+    
     <footer class="max-w-7xl mx-auto px-2"></footer>
     <script type="module" src="/js/admin.js"></script>
   </body>
