@@ -30,7 +30,7 @@ export async function getShowById(id) {
   }
 }
 
-export async function addShowById(newShow) {
+export async function addShow(newShow) {
   try {
     let response = await fetch(shows_Url, {
       method: "POST",
@@ -48,3 +48,23 @@ export async function addShowById(newShow) {
   }
 }
 
+
+export async function updateShow(showData, id) {
+  try {
+    let response = await fetch(`${shows_Url}/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(showData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Error updating the data");
+    }
+    let data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("Error updating show: ", error);
+  }
+}
