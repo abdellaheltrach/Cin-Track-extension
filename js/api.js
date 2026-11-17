@@ -48,7 +48,6 @@ export async function addShow(newShow) {
   }
 }
 
-
 export async function updateShow(showData, id) {
   try {
     let response = await fetch(`${shows_Url}/${id}`, {
@@ -66,5 +65,19 @@ export async function updateShow(showData, id) {
     return data;
   } catch (error) {
     console.log("Error updating show: ", error);
+  }
+}
+
+export async function deleteShow(id) {
+  try {
+    let response = await fetch(`${shows_Url}/${id}`, { method: "DELETE" });
+
+    if (!response.ok) {
+      throw new Error("Error delete the data");
+    }
+    let data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("Error delete show: ", error);
   }
 }
