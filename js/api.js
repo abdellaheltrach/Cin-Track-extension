@@ -16,6 +16,17 @@ export async function getShows() {
   }
 }
 
+
+export async function getAllShows() {
+  let response = await fetch(shows_Url);
+
+  if (!response.ok) {
+    throw new Error("error loading the data");
+  }
+  let data = await response.json();
+  return data;
+}
+
 export async function getShowById(id) {
   try {
     let response = await fetch(shows_Url + "/" + { id });

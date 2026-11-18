@@ -1,4 +1,4 @@
-import { getShows } from "./api.js";
+import { getAllShows } from "./api.js";
 
 const statusMessage = document.getElementById("status-message");
 const tableContainer = document.getElementById("table-container");
@@ -8,11 +8,12 @@ const tableBody = document.getElementById("table-body");
 // console.log(tableContainer);
 // console.log(tableBody);
 
-let shows = await getShows();
-console.table(shows)
-renderAdminTableRows();
+// let shows = await getShows();
+// console.table(shows)
 
-function renderAdminTableRows() {
+loadShows();
+
+function renderAdminTableRows(shows) {
   if (!shows) {
     tableContainer.classList.add("hidden");
     showStatus("Aucun contenu disponible.", "text-gray-400");
@@ -58,4 +59,28 @@ function renderAdminTableRows() {
     `,
     )
     .join("");
+}
+
+async function loadShows() {
+  showStatus("Chargement…", "text-gray-300 animate-pulse");
+  try {
+    let shows = await getAllShows();
+    hideStatus();
+    renderAdminTableRows(shows);
+  } catch (error) {
+    showStatus(
+      `Impossible de charger les contenus : ${error}`,
+      "text-red-400 bg-red-950/30 border border-red-800 rounded-lg p-4",
+    );
+  }
+}
+
+function showStatus(text, classes) {
+  statusMessage.className = `text-center py-8 text-lg ${classes}`;
+  statusMessage.textContent = text;
+  statusMessage.classList.remove("hidden");
+}
+
+function hideStatus() {
+  statusMessage.classList.add("hidden");
 }
