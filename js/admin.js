@@ -4,12 +4,13 @@ const statusMessage = document.getElementById("status-message");
 const tableContainer = document.getElementById("table-container");
 const tableBody = document.getElementById("table-body");
 
-// console.log(statusMessage)
-// console.log(tableContainer);
-// console.log(tableBody);
 
-// let shows = await getShows();
-// console.table(shows)
+let modelCancelBtn = document.getElementById("btn-cancel");
+
+modelCancelBtn.addEventListener('click',(e)=> {
+        const model = document.getElementById("modal");
+        model.classList.add("hidden");
+})
 
 loadShows();
 
@@ -19,6 +20,9 @@ function renderAdminTableRows(shows) {
     showStatus("Aucun contenu disponible.", "text-gray-400");
     return;
   }
+
+
+  console.log(shows)
 
   tableContainer.classList.remove("hidden");
   tableBody.innerHTML = "";
@@ -89,7 +93,8 @@ function renderAdminTableRows(shows) {
 
     //edit btn clicked
     if (editBtn) {
-      console.log("edite clicked");
+      const model = document.getElementById("modal");
+      model.classList.remove('hidden')
     }
   });
 }
