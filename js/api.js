@@ -80,7 +80,6 @@ export async function updateShow(showData, id) {
 }
 
 export async function deleteShow(id) {
-  try {
     let response = await fetch(`${shows_Url}/${id}`, { method: "DELETE" });
 
     if (!response.ok) {
@@ -88,7 +87,5 @@ export async function deleteShow(id) {
     }
     let data = await response.json();
     return data;
-  } catch (error) {
-    console.log("Error delete show: ", error);
-  }
+
 }

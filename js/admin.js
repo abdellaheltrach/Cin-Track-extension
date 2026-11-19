@@ -1,4 +1,4 @@
-import { getAllShows } from "./api.js";
+import { deleteShow, getAllShows } from "./api.js";
 
 const statusMessage = document.getElementById("status-message");
 const tableContainer = document.getElementById("table-container");
@@ -60,32 +60,38 @@ function renderAdminTableRows(shows) {
     )
     .join("");
 
+  //add contaner events
 
-    //add contaner events
+  tableBody.addEventListener("click", async (e) => {
+    const deleteBtn = e.target.closest(".btn-delete");
+    const editBtn = e.target.closest(".btn-edit");
 
-    tableBody.addEventListener('click', (e)=>{
-      const deleteBtn = e.target.closest(".btn-delete");
-      const editBtn = e.target.closest(".btn-edit");
-
-
-      //delete clicked 
-      if(deleteBtn)
-      {
-        console.log('delte clicked')
+    //delete clicked
+    if (deleteBtn) {
+      const id = deleteBtn.dataset.id;
+      const show = shows.find((i) => i.id == id);
+      if (!show) {
+        return;
       }
 
-      //edit btn clicked
-      if (editBtn) {
-        console.log("edite clicked");
-        
-        
+      if (!confirm(`Supprimer le ${show.type} "${show.title}" ?`)) return;
+
+      //call delete
+
+      try {
+        deleteShow(id);
+        shows = await getAllShows();
+        renderAdminTableRows(shows);
+      } catch (error) {
+        alert(`Erreur : ${error.message}`);
       }
+    }
 
-
-
-
-
-    })
+    //edit btn clicked
+    if (editBtn) {
+      console.log("edite clicked");
+    }
+  });
 }
 
 async function loadShows() {
