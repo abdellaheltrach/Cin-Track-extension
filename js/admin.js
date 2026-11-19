@@ -4,13 +4,12 @@ const statusMessage = document.getElementById("status-message");
 const tableContainer = document.getElementById("table-container");
 const tableBody = document.getElementById("table-body");
 
-
 let modelCancelBtn = document.getElementById("btn-cancel");
 
-modelCancelBtn.addEventListener('click',(e)=> {
-        const model = document.getElementById("modal");
-        model.classList.add("hidden");
-})
+modelCancelBtn.addEventListener("click", (e) => {
+  const model = document.getElementById("modal");
+  model.classList.add("hidden");
+});
 
 loadShows();
 
@@ -20,9 +19,6 @@ function renderAdminTableRows(shows) {
     showStatus("Aucun contenu disponible.", "text-gray-400");
     return;
   }
-
-
-  console.log(shows)
 
   tableContainer.classList.remove("hidden");
   tableBody.innerHTML = "";
@@ -93,8 +89,64 @@ function renderAdminTableRows(shows) {
 
     //edit btn clicked
     if (editBtn) {
+      const id = editBtn.dataset.id;
+      const show = shows.find((i) => i.id == id);
+
+      //show model
       const model = document.getElementById("modal");
-      model.classList.remove('hidden')
+      model.classList.remove("hidden");
+      //edite title
+      const modelTitle = document.getElementById("modal-title");
+      modelTitle.textContent = "modifier un contenu";
+      //edite submit botton
+      const submitbtn = document.getElementById("btn-submit");
+      submitbtn.textContent = "Modifier";
+
+      submitbtn.dataset.id = show.id;
+
+      submitbtn.addEventListener("click", handleSubmit);
+
+      const contenuDetails = document.getElementById("contenu-details");
+
+      contenuDetails.innerHTML =
+        show.type === "movie"
+          ? `   <label for="show-duration" class="block text-sm text-gray-300 mb-1">Durée (min) *</label>
+          <input type="number" min="10" name="" id="show-duration"
+            class="w-full px-3 py-2 rounded-lg bg-[#121214] border border-[#35353d] text-white" placeholder="120">`
+          : `<div>
+          <label for="show-seasons" class="block text-sm text-gray-300 mb-1">Nombre de saisons *</label>
+          <input type="number" id="show-seasons" min="1"
+            class="w-full px-3 py-2 rounded-lg bg-[#121214] border border-[#35353d] text-white" placeholder="1">
+        </div>`;
+
+      //fill textboxes
+      const showTitleInput = document.getElementById("show-title");
+      const showDescriptionInput = document.getElementById("show-description");
+      const showTypeInput = document.getElementById("show-type");
+      const showYearInput = document.getElementById("show-year");
+      const showImgInput = document.getElementById("show-img");
+      const showGenresInput = document.getElementById("show-genres");
+      const showDirectorsInput = document.getElementById("show-directors");
+      const showCountriesInput = document.getElementById("show-countries");
+
+      showTitleInput.value = show.title;
+      showDescriptionInput.value = show.description ?? "";
+      showTypeInput.value = show.type;
+      showYearInput.value = show.releaseYear;
+      showImgInput.value = show.image;
+
+      if (show.type === "movie") {
+        const showDurationInput = document.getElementById("show-duration");
+        showDurationInput.value = show.duration;
+      } else {
+        const showSeasonsInput = document.getElementById("show-seasons");
+        showSeasonsInput.value = show.seasons.length;
+      }
+
+      showGenresInput.value = show.genres.join(", ");
+
+      showDirectorsInput.value = show.directors.join(", ");
+      showCountriesInput.value = show.productionCountries.join(", ");
     }
   });
 }
@@ -121,4 +173,10 @@ function showStatus(text, classes) {
 
 function hideStatus() {
   statusMessage.classList.add("hidden");
+}
+
+
+function handleSubmit(e) {
+  e.preventDefault();
+  console.log("heello");
 }
