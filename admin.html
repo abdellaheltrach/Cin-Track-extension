@@ -1,96 +1,92 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CinéTrack</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CinéTrack</title>
 
-    <!-- Tailwind CSS v4 -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <!-- Tailwind CSS v4 -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-    <!-- roboto font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
-      rel="stylesheet"
-    />
+  <!-- roboto font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet" />
 
-    <!-- Configure Roboto as the default sans/body font in Tailwind v4 -->
-    <style>
-      body {
-        font-family: "Roboto", sans-serif;
-      }
-    </style>
-  </head>
-  <body class="bg-[#121214] text-white font-sans">
-    <header
-      class="max-w-7xl mx-auto px-2 border-b-2 mb-[8px] border-[#35353d] h-[80px] flex flex-row justify-between items-center"
-    >
-      <a href="/index.html">
-        <img
-          class="h-[80px] block md:hidden"
-          src="/img/Phone Logo.png"
-          alt="page logo"
-        />
+  <!-- Configure Roboto as the default sans/body font in Tailwind v4 -->
+  <style>
+    body {
+      font-family: "Roboto", sans-serif;
+    }
+  </style>
+</head>
 
-        <img
-          class="w-[250px] h-[80px] hidden md:block"
-          src="/img/Logo.png"
-          alt="page logo"
-        />
-      </a>
-      <button
-        class="cursor-pointer p-2 w-12 h-12 flex items-center justify-center rounded-full hover:bg-[#383840]/20 transition-colors"
-      >
-        <svg
-          class="border-2 border-white rounded-full h-9 w-9 p-1 text-white"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-          <circle cx="12" cy="7" r="4" />
-        </svg>
-      </button>
-    </header>
-<div
-      class="max-w-7xl mx-auto px-2 grid grid-cols-1 lg:grid-cols-12 gap-4 min-h-[calc(100vh-88px)]"
-    >
-      <main class="lg:col-span-12 py-4">
-        <div class="flex justify-between items-center mb-6">
-          <h1 class="text-2xl">Gestion du catalogue</h1>
-        </div>
+<body class="bg-[#121214] text-white font-sans">
+  <header
+    class="max-w-7xl mx-auto px-2 border-b-2 mb-[8px] border-[#35353d] h-[80px] flex flex-row justify-between items-center">
+    <a href="/index.html">
+      <img class="h-[80px] block md:hidden" src="/img/Phone Logo.png" alt="page logo" />
 
-        <div id="status-message" class="hidden text-center py-8 text-lg"></div>
+      <img class="w-[250px] h-[80px] hidden md:block" src="/img/Logo.png" alt="page logo" />
+    </a>
+    <button
+      class="cursor-pointer p-2 w-12 h-12 flex items-center justify-center rounded-full hover:bg-[#383840]/20 transition-colors">
+      <svg class="border-2 border-white rounded-full h-9 w-9 p-1 text-white" xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+      </svg>
+    </button>
+  </header>
+  <div class="max-w-7xl mx-auto px-2 grid grid-cols-1 lg:grid-cols-12 gap-4 min-h-[calc(100vh-88px)]">
+    <main class="lg:col-span-12 py-4">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl">Gestion du catalogue</h1>
+      </div>
 
-        <div
-          id="table-container"
-          class="overflow-x-auto bg-[#1c1c20] rounded-lg border border-[#35353d] hidden"
-        >
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="border-b border-[#35353d] bg-[#25252b] text-gray-300 text-sm uppercase">
-                <th class="py-3 px-4">Image</th>
-                <th class="py-3 px-4">Titre</th>
-                <th class="py-3 px-4">Type</th>
-                <th class="py-3 px-4">Année</th>
-                <th class="py-3 px-4 text-right md:pr-20 lg:pr-20">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="table-body" class="divide-y divide-[#35353d]">
-            </tbody>
-          </table> 
-        </div>
-      </main>
+      <div id="status-message" class="hidden text-center py-8 text-lg"></div>
+
+      <div id="table-container" class="overflow-x-auto bg-[#1c1c20] rounded-lg border border-[#35353d] hidden">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="border-b border-[#35353d] bg-[#25252b] text-gray-300 text-sm uppercase">
+              <th class="py-3 px-4">Image</th>
+              <th class="py-3 px-4">Titre</th>
+              <th class="py-3 px-4">Type</th>
+              <th class="py-3 px-4">Année</th>
+              <th class="py-3 px-4 text-right md:pr-20 lg:pr-20">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="table-body" class="divide-y divide-[#35353d]">
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+
+  <!-- model -->
+  <div id="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-[#121214]/70 backdrop-blur"
+    onclick="closeModel()">
+    <div class="bg-[#27272c] border border-[#35353d] rounded-2xl w-[300px] max-w-[800px] p-6 mx-4"
+      id="modal-content" onclick="event.stopPropagation()">
+      <p class="text-xl text-gray-300">Confirme delete this show?</p>
+      <div class=" flex gap-3 justify-end ">
+        <button
+          class="btn-Cancel my-3 px-3 py-1.5 text-sm font-medium bg-blue-600 hover:bg-blue-500 text-white rounded transition-colors cursor-pointer">
+          Cancel
+        </button>
+        <button
+          class= "btn-Confirme my-3 px-3 py-1.5 text-sm font-medium bg-red-600 hover:bg-red-500 text-white rounded transition-colors cursor-pointer">
+          Confirme
+        </button>
+      </div>
     </div>
+  </div>
+  <footer class="max-w-7xl mx-auto px-2"></footer>
+  <script type="module" src="/js/admin.js"></script>
+</body>
 
-    
-    <footer class="max-w-7xl mx-auto px-2"></footer>
-    <script type="module" src="/js/admin.js"></script>
-  </body>
 </html>
