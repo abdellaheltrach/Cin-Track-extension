@@ -1,4 +1,4 @@
-import { deleteShow, getAllShows } from "./api.js";
+import { addShow, deleteShow, getAllShows, updateShow } from "./api.js";
 
 const statusMessage = document.getElementById("status-message");
 const tableContainer = document.getElementById("table-container");
@@ -7,8 +7,7 @@ const tableBody = document.getElementById("table-body");
 let modelCancelBtn = document.getElementById("btn-cancel");
 
 modelCancelBtn.addEventListener("click", (e) => {
-  const model = document.getElementById("modal");
-  model.classList.add("hidden");
+  closeModel();
 });
 
 loadShows();
@@ -83,7 +82,7 @@ function renderAdminTableRows(shows) {
         shows = await getAllShows();
         renderAdminTableRows(shows);
       } catch (error) {
-        alert(`Erreur : ${error.message}`);
+        showFeedback(error.message, failed);
       }
     }
 
@@ -143,6 +142,9 @@ function renderAdminTableRows(shows) {
         showSeasonsInput.value = show.seasons.length;
       }
 
+      //disactivate it
+      showTypeInput.disabled = true;
+
       showGenresInput.value = show.genres.join(", ");
 
       showDirectorsInput.value = show.directors.join(", ");
@@ -175,8 +177,159 @@ function hideStatus() {
   statusMessage.classList.add("hidden");
 }
 
-
-function handleSubmit(e) {
+async function handleSubmit(e) {
   e.preventDefault();
-  console.log("heello");
+
+  // element
+  const showTitleInput = document.getElementById("show-title");
+  const showDescriptionInput = document.getElementById("show-description");
+  const showTypeInput = document.getElementById("show-type");
+  const showYearInput = document.getElementById("show-year");
+  const showImgInput = document.getElementById("show-img");
+  const showGenresInput = document.getElementById("show-genres");
+  const showDirectorsInput = document.getElementById("show-directors");
+  const showCountriesInput = document.getElementById("show-countries");
+
+  // values
+  const title = showTitleInput.value.trim();
+  const description = showDescriptionInput.value.trim();
+  const type = showTypeInput.value;
+  const releaseYear = Number(showYearInput.value);
+  const image = showImgInput.value.trim();
+  const genres = showGenresInput.value
+    .split(",")
+    .map((g) => g.trim())
+    .filter(Boolean);
+  const directors = showDirectorsInput.value
+    .split(",")
+    .map((d) => d.trim())
+    .filter(Boolean);
+  const productionCountries = showCountriesInput.value
+    .split(",")
+    .map((c) => c.trim())
+    .filter(Boolean);
+
+  const submitbtn = document.getElementById("btn-submit");
+  const id = submitbtn.dataset.id;
+  let shows = await getAllShows();
+
+  if (id) {
+    // handle update
+    const existing = shows.find((i) => String(i.id) === String(id));
+    let updated;
+
+    if (type === "movie") {
+      const showDurationInput = document.getElementById("show-duration");
+      updated = {
+        ...existing,
+        title,
+        description,
+        type,
+        releaseYear,
+        image,
+        genres,
+        directors,
+        productionCountries,
+        duration: Number(showDurationInput.value),
+      };
+      delete updated.seasons;
+    } else {
+      const showSeasonsInput = document.getElementById("show-seasons");
+      const count = Number(showSeasonsInput.value);
+      updated = {
+        ...existing,
+        title,
+        description,
+        type,
+        releaseYear,
+        image,
+        genres,
+        directors,
+        productionCountries,
+        seasons: createSeasonsArray(count),
+      };
+      delete updated.duration;
+    }
+
+    try {
+      const saved = await updateShow(updated, id);
+      shows = shows.map((i) => (String(i.id) === String(id) ? saved : i));
+      renderAdminTableRows(shows);
+      showFeedback(`« ${saved.title} » a bien été modifié.`, "success");
+      closeModel();
+    } catch (error) {
+      showFeedback(error.message, "error");
+    }
+  } else {
+    // handle adding
+    let newShow;
+
+    if (type === "movie") {
+      const showDurationInput = document.getElementById("show-duration");
+      newShow = {
+        title,
+        description,
+        type,
+        releaseYear,
+        image,
+        genres,
+        directors,
+        productionCountries,
+        duration: Number(showDurationInput.value),
+      };
+    } else {
+      const showSeasonsInput = document.getElementById("show-seasons");
+      const count = Number(showSeasonsInput.value);
+      newShow = {
+        title,
+        description,
+        type,
+        releaseYear,
+        image,
+        genres,
+        directors,
+        productionCountries,
+        seasons: createSeasonsArray(count),
+      };
+    }
+
+    try {
+      const created = await addShow(newShow);
+      shows = [...shows, created];
+      renderAdminTableRows(shows);
+      showFeedback(`« ${created.title} » a bien été ajouté.`, "success");
+      closeModel();
+    } catch (error) {
+      showFeedback(error.message, "error");
+    }
+  }
+}
+
+function createSeasonsArray(count) {
+  const seasons = [];
+  for (let i = 1; i <= count; i++) {
+    seasons.push(i);
+  }
+  return seasons;
+}
+
+function closeModel() {
+  const modal = document.getElementById("modal");
+  const form = document.getElementById("formModel");
+  const submitbtn = document.getElementById("btn-submit");
+
+  modal.classList.add("hidden");
+  form.reset();
+
+  submitbtn.dataset.id = "";
+  submitbtn.textContent = "Enregistrer";
+}
+
+function showFeedback(message, type = "success") {
+  const banner = document.getElementById("feedback-banner");
+  banner.textContent = message;
+  banner.className =
+    type === "success"
+      ? "mb-6 px-4 py-3 rounded-lg text-sm border bg-emerald-950/60 border-emerald-700 text-emerald-300"
+      : "mb-6 px-4 py-3 rounded-lg text-sm border bg-red-950/60 border-red-700 text-red-300";
 }

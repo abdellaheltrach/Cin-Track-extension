@@ -46,6 +46,8 @@
       <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl">Gestion du catalogue</h1>
       </div>
+      <!-- message -->
+      <div id="feedback-banner" class="hidden mb-6 px-4 py-3 rounded-lg text-sm border"></div>
 
       <div id="status-message" class="hidden text-center py-8 text-lg"></div>
 
@@ -71,8 +73,17 @@
   <!-- model -->
   <div id="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-[#121214]/70 backdrop-blur"
     onclick="closeModel()">
-    <div class="bg-[#27272c] border border-[#35353d] rounded-2xl w-full max-w-[800px] p-6 mx-4" id="modal-content"
-      onclick="event.stopPropagation()">
+    <div class="relative bg-[#27272c] border border-[#35353d] rounded-2xl w-full max-w-[800px] p-6 mx-4"
+      id="modal-content" onclick="event.stopPropagation()">
+      <button id="closeModalBtn"
+        class="absolute top-4 right-4 text-gray-400 hover:text-white hover:bg-[#35353d] p-1.5 rounded-full transition-colors cursor-pointer"
+        onclick="closeModel()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18" />
+          <path d="m6 6 12 12" />
+        </svg>
+      </button>
       <h2 id="modal-title" class="text-xl font-bold text-white mb-4">
         Ajouter un contenu
       </h2>
