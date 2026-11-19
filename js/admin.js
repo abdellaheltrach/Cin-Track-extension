@@ -44,7 +44,7 @@ function renderAdminTableRows(shows) {
         <td class="py-3 px-4 text-right space-x-2">
           <button 
             data-id="${elm.id}" 
-            class="btn-edit px-3 py-1.5 text-sm font-medium bg-blue-600 hover:bg-blue-500 text-white rounded transition-colors cursor-pointer"
+            class="btn-edit my-3 px-3 py-1.5 text-sm font-medium bg-blue-600 hover:bg-blue-500 text-white rounded transition-colors cursor-pointer"
           >
             Modifier
           </button>
@@ -59,6 +59,33 @@ function renderAdminTableRows(shows) {
     `,
     )
     .join("");
+
+
+    //add contaner events
+
+    tableBody.addEventListener('click', (e)=>{
+      const deleteBtn = e.target.closest(".btn-delete");
+      const editBtn = e.target.closest(".btn-edit");
+
+
+      //delete clicked 
+      if(deleteBtn)
+      {
+        console.log('delte clicked')
+      }
+
+      //edit btn clicked
+      if (editBtn) {
+        console.log("edite clicked");
+        
+        
+      }
+
+
+
+
+
+    })
 }
 
 async function loadShows() {
