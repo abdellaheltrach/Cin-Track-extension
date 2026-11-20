@@ -1,5 +1,5 @@
 import { loadFavorites, saveFavorites } from "./data.js";
-import { getShows } from "./api.js";
+import { getComments, getShows } from "./api.js";
 
 //action
 let showsData;
@@ -68,11 +68,18 @@ export function openModel(card) {
         </div>
       </div>
     </div>
+          <div class="mt-6 pt-4 border-t border-[#35353d] space-y-3">
+      <h3 class="text-base font-bold text-white">Commentaires</h3>
+      <div id="comments" class="space-y-2 max-h-48 overflow-y-auto">
+      </div>
   `;
 
   // Show the modal
   const model = document.getElementById("modal");
   model.classList.remove("hidden");
+
+  //render comments
+  renderComments(item.id);
 }
 
 export function renderCards(filtredData, page, size) {
@@ -331,10 +338,8 @@ export function renderFavorites() {
 }
 export function handleFetchError() {
   const cardsContainer = document.getElementById("cardsContainer");
-  if(!cardsContainer) return;
+  if (!cardsContainer) return;
 
-
-  
   cardsContainer.innerHTML = `
       <div class="col-span-full flex flex-col items-center justify-center py-16 px-4 text-center">
         <svg class="w-16 h-16 text-red-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -349,4 +354,36 @@ export function handleFetchError() {
     `;
   const paginationHTML = document.getElementById("pagination");
   paginationHTML.innerHTML = "";
+}
+
+async function renderComments(showId) {
+  const commentsContainer = document.getElementById("comments");
+  if (!commentsContainer) return;
+
+  commentsContainer.innerHTML = `<p class="text-xs text-gray-400">Chargement...</p>`;
+
+  try {
+    let comments = await getComments(showId);
+    
+    console.log(comments)
+    if (comments.length === 0 ) {
+      commentsContainer.innerHTML = `<p class="text-xs text-gray-400">Add first comment</p>`;
+      return;
+    }
+
+    commentsContainer.innerHTML = comments
+      .map(
+        (c) => `
+        <div class="bg-[#1e1e24] p-2.5 rounded-lg border border-[#35353d] text-sm">
+          <div class="flex justify-between items-center text-xs text-gray-400 mb-1">
+            <strong class="text-white">${c.author}</strong>
+          </div>
+          <p class="text-gray-200">${c.comment}</p>
+        </div>
+      `,
+      )
+      .join("");
+  } catch (error) {
+    commentsContainer.innerHTML = `<p class="text-xs text-red-400">Erreur lors du chargement des commentaires.</p>`;
+  }
 }
