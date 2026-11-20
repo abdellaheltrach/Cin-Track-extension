@@ -1,7 +1,8 @@
-import { loadData, loadFavorites, saveFavorites } from "./data.js";
+import { loadFavorites, saveFavorites } from "./data.js";
+import { addComments, getComments, getShows } from "./api.js";
 
 //action
-let showsData = await loadData();
+let showsData;
 
 let currentPage = 1;
 let currentSize = 6;
@@ -12,11 +13,11 @@ window.closeModel = function () {
 };
 
 //calback function
- function renderList(items, cardTemplateCallback) {
+function renderList(items, cardTemplateCallback) {
   return items.map(cardTemplateCallback).join("");
 }
 
-export function openModel(card) {
+ export  function openModel(card) {
   const id = card.dataset.id;
 
   const item = showsData.find((d) => d.id === id);
@@ -67,11 +68,66 @@ export function openModel(card) {
         </div>
       </div>
     </div>
+          <div class="mt-6 pt-4 border-t border-[#35353d] space-y-3">
+      <h3 class="text-base font-bold text-white">Commentaires</h3>
+      <form id="comment-form" class="flex flex-col sm:flex-row gap-2">
+    <input
+      id="comment-user"
+      type="text"
+      placeholder="Your name"
+      required
+      class="bg-[#1e1e24] border border-[#35353d] rounded-lg px-3 py-2 text-sm text-white sm:w-44"
+    />
+    <input
+      id="comment-text"
+      type="text"
+      placeholder="Your message..."
+      required
+      class="bg-[#1e1e24] border border-[#35353d] rounded-lg px-3 py-2 text-sm text-white flex-1"
+    />
+    <button
+      id="comment-submit"
+      type="submit"
+      class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-4 py-2 rounded-lg cursor-pointer"
+    >
+      Send
+    </button>
+  </form>
+      <div id="comments" class="space-y-2 max-h-48 overflow-y-auto">
+      </div>
   `;
 
   // Show the modal
   const model = document.getElementById("modal");
   model.classList.remove("hidden");
+
+  //render comments and comment form
+  const commentForm = document.getElementById("comment-form");
+
+  commentForm.addEventListener('submit',async (e)=>{
+    e.preventDefault();
+
+
+    const userInput = document.getElementById("comment-user");
+    const textInput = document.getElementById("comment-text");
+    const submitBtn = document.getElementById("comment-submit");
+
+    const user = userInput.value.trim();
+    const text = textInput.value.trim();
+    if (!user || !text) return;
+    try {
+      await addComments(item.id, user, text);
+      textInput.value = "";
+      userInput.value = '';
+    } catch {
+      alert("Impossible d'ajouter le commentaire.");
+    } finally {
+      submitBtn.disabled = false;
+      await renderComments(item.id);
+      
+    }
+  })
+  renderComments(item.id);
 }
 
 export function renderCards(filtredData, page, size) {
@@ -88,7 +144,7 @@ export function renderCards(filtredData, page, size) {
   if (!size) {
     size = 6;
   }
-
+  showsData = filtredData;
   currentPage = page;
   currentSize = size;
 
@@ -198,7 +254,7 @@ export function rederPagination(showsTable, courantPage, pageSize) {
 }
 
 export async function handleFilter() {
-  let shows = await loadData();
+  let shows = await getShows();
 
   const serchInput = document.getElementById("search");
   const statusSelector = document.getElementById("filter");
@@ -330,6 +386,8 @@ export function renderFavorites() {
 }
 export function handleFetchError() {
   const cardsContainer = document.getElementById("cardsContainer");
+  if (!cardsContainer) return;
+
   cardsContainer.innerHTML = `
       <div class="col-span-full flex flex-col items-center justify-center py-16 px-4 text-center">
         <svg class="w-16 h-16 text-red-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -344,4 +402,36 @@ export function handleFetchError() {
     `;
   const paginationHTML = document.getElementById("pagination");
   paginationHTML.innerHTML = "";
+}
+
+async function renderComments(showId) {
+  const commentsContainer = document.getElementById("comments");
+  if (!commentsContainer) return;
+
+  commentsContainer.innerHTML = `<p class="text-xs text-gray-400">Chargement...</p>`;
+
+  try {
+    let comments = await getComments(showId);
+
+    if (comments.length === 0) {
+      commentsContainer.innerHTML = `<p class="text-xs text-gray-400">Add first comment</p>`;
+      return;
+    }
+
+    commentsContainer.innerHTML = comments
+      .map(
+        (c) => `
+        <div class="bg-[#1e1e24] p-2.5 rounded-lg border border-[#35353d] text-sm">
+          <div class="flex justify-between items-center text-xs text-gray-400 mb-1">
+            <strong class="text-white">${c.author}</strong>
+            <span>${c.date || ""}</span>
+          </div>
+          <p class="text-gray-200">${c.comment}</p>
+        </div>
+      `,
+      )
+      .join("");
+  } catch (error) {
+    commentsContainer.innerHTML = `<p class="text-xs text-red-400">Erreur lors du chargement des commentaires.</p>`;
+  }
 }
