@@ -1,5 +1,5 @@
 import { loadFavorites, saveFavorites } from "./data.js";
-import { getComments, getShows } from "./api.js";
+import { addComments, getComments, getShows } from "./api.js";
 
 //action
 let showsData;
@@ -17,7 +17,7 @@ function renderList(items, cardTemplateCallback) {
   return items.map(cardTemplateCallback).join("");
 }
 
-export function openModel(card) {
+ export  function openModel(card) {
   const id = card.dataset.id;
 
   const item = showsData.find((d) => d.id === id);
@@ -70,6 +70,29 @@ export function openModel(card) {
     </div>
           <div class="mt-6 pt-4 border-t border-[#35353d] space-y-3">
       <h3 class="text-base font-bold text-white">Commentaires</h3>
+      <form id="comment-form" class="flex flex-col sm:flex-row gap-2">
+    <input
+      id="comment-user"
+      type="text"
+      placeholder="Your name"
+      required
+      class="bg-[#1e1e24] border border-[#35353d] rounded-lg px-3 py-2 text-sm text-white sm:w-44"
+    />
+    <input
+      id="comment-text"
+      type="text"
+      placeholder="Your message..."
+      required
+      class="bg-[#1e1e24] border border-[#35353d] rounded-lg px-3 py-2 text-sm text-white flex-1"
+    />
+    <button
+      id="comment-submit"
+      type="submit"
+      class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-4 py-2 rounded-lg cursor-pointer"
+    >
+      Send
+    </button>
+  </form>
       <div id="comments" class="space-y-2 max-h-48 overflow-y-auto">
       </div>
   `;
@@ -78,7 +101,32 @@ export function openModel(card) {
   const model = document.getElementById("modal");
   model.classList.remove("hidden");
 
-  //render comments
+  //render comments and comment form
+  const commentForm = document.getElementById("comment-form");
+
+  commentForm.addEventListener('submit',async (e)=>{
+    e.preventDefault();
+
+
+    const userInput = document.getElementById("comment-user");
+    const textInput = document.getElementById("comment-text");
+    const submitBtn = document.getElementById("comment-submit");
+
+    const user = userInput.value.trim();
+    const text = textInput.value.trim();
+    if (!user || !text) return;
+    try {
+      await addComments(item.id, user, text);
+      textInput.value = "";
+      userInput.value = '';
+    } catch {
+      alert("Impossible d'ajouter le commentaire.");
+    } finally {
+      submitBtn.disabled = false;
+      await renderComments(item.id);
+      
+    }
+  })
   renderComments(item.id);
 }
 
@@ -364,9 +412,9 @@ async function renderComments(showId) {
 
   try {
     let comments = await getComments(showId);
-    
-    console.log(comments)
-    if (comments.length === 0 ) {
+
+    console.log(comments);
+    if (comments.length === 0) {
       commentsContainer.innerHTML = `<p class="text-xs text-gray-400">Add first comment</p>`;
       return;
     }
@@ -377,6 +425,7 @@ async function renderComments(showId) {
         <div class="bg-[#1e1e24] p-2.5 rounded-lg border border-[#35353d] text-sm">
           <div class="flex justify-between items-center text-xs text-gray-400 mb-1">
             <strong class="text-white">${c.author}</strong>
+            <span>${c.date || ""}</span>
           </div>
           <p class="text-gray-200">${c.comment}</p>
         </div>
