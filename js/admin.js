@@ -5,9 +5,16 @@ const tableContainer = document.getElementById("table-container");
 const tableBody = document.getElementById("table-body");
 
 let modelCancelBtn = document.getElementById("btn-cancel");
+let addbtn = document.getElementById("add-btn");
+addbtn.addEventListener("click", openModel);
 
-modelCancelBtn.addEventListener("click", (e) => {
-  closeModel();
+modelCancelBtn.addEventListener("click", (e) => {});
+
+
+const showTypeInput = document.getElementById("show-type");
+const contenuDetails = document.getElementById("contenu-details");
+showTypeInput.addEventListener("change", (e) => {
+  renderTypeDetails(e.target.value);
 });
 
 loadShows();
@@ -143,7 +150,7 @@ function renderAdminTableRows(shows) {
       }
 
       //disactivate it
-      showTypeInput.disabled = true;
+      // showTypeInput.disabled = true;
 
       showGenresInput.value = show.genres.join(", ");
 
@@ -325,6 +332,18 @@ function closeModel() {
   submitbtn.textContent = "Enregistrer";
 }
 
+function openModel() {
+  const modal = document.getElementById("modal");
+  const form = document.getElementById("formModel");
+  const submitbtn = document.getElementById("btn-submit");
+
+  form.reset();
+  modal.classList.remove("hidden");
+
+  submitbtn.dataset.id = "";
+  submitbtn.textContent = "ajouter";
+}
+
 function showFeedback(message, type = "success") {
   const banner = document.getElementById("feedback-banner");
   banner.textContent = message;
@@ -332,4 +351,17 @@ function showFeedback(message, type = "success") {
     type === "success"
       ? "mb-6 px-4 py-3 rounded-lg text-sm border bg-emerald-950/60 border-emerald-700 text-emerald-300"
       : "mb-6 px-4 py-3 rounded-lg text-sm border bg-red-950/60 border-red-700 text-red-300";
+}
+
+function renderTypeDetails(type) {
+  contenuDetails.innerHTML =
+    type === "movie"
+      ? `<label for="show-duration" class="block text-sm text-gray-300 mb-1">Durée (min) *</label>
+         <input type="number" min="10" name="" id="show-duration"
+           class="w-full px-3 py-2 rounded-lg bg-[#121214] border border-[#35353d] text-white" placeholder="120">`
+      : `<div>
+           <label for="show-seasons" class="block text-sm text-gray-300 mb-1">Nombre de saisons *</label>
+           <input type="number" id="show-seasons" min="1"
+             class="w-full px-3 py-2 rounded-lg bg-[#121214] border border-[#35353d] text-white" placeholder="1">
+         </div>`;
 }
