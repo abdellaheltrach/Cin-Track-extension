@@ -1,4 +1,5 @@
 import { addShow, deleteShow, getAllShows, updateShow } from "./api.js";
+import { validateForm } from "./validation.js";
 
 const statusMessage = document.getElementById("status-message");
 const tableContainer = document.getElementById("table-container");
@@ -189,6 +190,10 @@ function hideStatus() {
 
 async function handleSubmit(e) {
   e.preventDefault();
+
+  if(!validateForm()){
+    return;
+  }
 
   // element
   const showTitleInput = document.getElementById("show-title");
