@@ -16,7 +16,6 @@ export async function getShows() {
   }
 }
 
-
 export async function getAllShows() {
   let response = await fetch(shows_Url);
 
@@ -42,21 +41,19 @@ export async function getShowById(id) {
 }
 
 export async function addShow(newShow) {
-  try {
-    let response = await fetch(shows_Url, {
-      method: "POST",
+  let response = await fetch(shows_Url, {
+    method: "POST",
+    headers: {
       "Content-Type": "application/json",
-      body: JSON.stringify(newShow),
-    });
+    },
+    body: JSON.stringify(newShow),
+  });
 
-    if (!response.ok) {
-      throw new Error("error loading the data");
-    }
-    let data = await response.json();
-    return data;
-  } catch (error) {
-    console.log("error adding new show ", error);
+  if (!response.ok) {
+    throw new Error("error loading the data");
   }
+  let data = await response.json();
+  return data;
 }
 
 export async function updateShow(showData, id) {
@@ -80,15 +77,11 @@ export async function updateShow(showData, id) {
 }
 
 export async function deleteShow(id) {
-  try {
-    let response = await fetch(`${shows_Url}/${id}`, { method: "DELETE" });
+  let response = await fetch(`${shows_Url}/${id}`, { method: "DELETE" });
 
-    if (!response.ok) {
-      throw new Error("Error delete the data");
-    }
-    let data = await response.json();
-    return data;
-  } catch (error) {
-    console.log("Error delete show: ", error);
+  if (!response.ok) {
+    throw new Error("Error delete the data");
   }
+  let data = await response.json();
+  return data;
 }

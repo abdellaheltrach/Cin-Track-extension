@@ -2,7 +2,7 @@ import { loadFavorites, saveFavorites } from "./data.js";
 import { getShows } from "./api.js";
 
 //action
-let showsData = await getShows();
+let showsData;
 
 let currentPage = 1;
 let currentSize = 6;
@@ -89,7 +89,7 @@ export function renderCards(filtredData, page, size) {
   if (!size) {
     size = 6;
   }
-
+  showsData = filtredData;
   currentPage = page;
   currentSize = size;
 
@@ -332,6 +332,9 @@ export function renderFavorites() {
 export function handleFetchError() {
   const cardsContainer = document.getElementById("cardsContainer");
   if(!cardsContainer) return;
+
+
+  
   cardsContainer.innerHTML = `
       <div class="col-span-full flex flex-col items-center justify-center py-16 px-4 text-center">
         <svg class="w-16 h-16 text-red-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
