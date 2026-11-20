@@ -413,7 +413,6 @@ async function renderComments(showId) {
   try {
     let comments = await getComments(showId);
 
-    console.log(comments);
     if (comments.length === 0) {
       commentsContainer.innerHTML = `<p class="text-xs text-gray-400">Add first comment</p>`;
       return;

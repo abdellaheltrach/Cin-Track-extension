@@ -38,7 +38,7 @@ export function validateForm() {
     !releaseYear ||
     !image ||
     genres.length === 0 ||
-    directors === 0 ||
+    directors.length === 0 ||
     productionCountries.length === 0
   ) {
     showError("tout les champs sont obligatoire");

@@ -90,11 +90,11 @@ function renderAdminTableRows(shows) {
       //call delete
 
       try {
-        deleteShow(id);
+        await deleteShow(id);
         shows = await getAllShows();
         renderAdminTableRows(shows);
       } catch (error) {
-        showFeedback(error.message, failed);
+        showFeedback(error.message, "error");
       }
     }
 
@@ -145,6 +145,8 @@ function renderAdminTableRows(shows) {
       showYearInput.value = show.releaseYear;
       showImgInput.value = show.image;
 
+
+      
       if (show.type === "movie") {
         const showDurationInput = document.getElementById("show-duration");
         showDurationInput.value = show.duration;
