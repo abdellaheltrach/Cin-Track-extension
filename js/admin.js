@@ -3,13 +3,17 @@ import { addShow, deleteShow, getAllShows, updateShow } from "./api.js";
 const statusMessage = document.getElementById("status-message");
 const tableContainer = document.getElementById("table-container");
 const tableBody = document.getElementById("table-body");
+const formModel = document.getElementById("formModel");
+
+
 
 let modelCancelBtn = document.getElementById("btn-cancel");
 let addbtn = document.getElementById("add-btn");
-addbtn.addEventListener("click", openModel);
 
-modelCancelBtn.addEventListener("click", (e) => {});
-
+//events
+formModel.addEventListener("submit", handleSubmit);
+addbtn.addEventListener("click", openModelForAdding);
+modelCancelBtn.addEventListener("click", closeModel);
 
 const showTypeInput = document.getElementById("show-type");
 const contenuDetails = document.getElementById("contenu-details");
@@ -110,7 +114,6 @@ function renderAdminTableRows(shows) {
 
       submitbtn.dataset.id = show.id;
 
-      submitbtn.addEventListener("click", handleSubmit);
 
       const contenuDetails = document.getElementById("contenu-details");
 
@@ -332,7 +335,7 @@ function closeModel() {
   submitbtn.textContent = "Enregistrer";
 }
 
-function openModel() {
+function openModelForAdding() {
   const modal = document.getElementById("modal");
   const form = document.getElementById("formModel");
   const submitbtn = document.getElementById("btn-submit");
@@ -342,6 +345,7 @@ function openModel() {
 
   submitbtn.dataset.id = "";
   submitbtn.textContent = "ajouter";
+
 }
 
 function showFeedback(message, type = "success") {

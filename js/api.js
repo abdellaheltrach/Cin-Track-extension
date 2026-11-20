@@ -41,23 +41,19 @@ export async function getShowById(id) {
 }
 
 export async function addShow(newShow) {
-  try {
-    let response = await fetch(shows_Url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newShow),
-    });
+  let response = await fetch(shows_Url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newShow),
+  });
 
-    if (!response.ok) {
-      throw new Error("error loading the data");
-    }
-    let data = await response.json();
-    return data;
-  } catch (error) {
-    console.log("error adding new show ", error);
+  if (!response.ok) {
+    throw new Error("error loading the data");
   }
+  let data = await response.json();
+  return data;
 }
 
 export async function updateShow(showData, id) {
