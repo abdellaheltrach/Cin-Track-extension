@@ -1,5 +1,5 @@
 import { addShow, deleteShow, getAllShows, updateShow } from "./api.js";
-import { validateForm } from "./validation.js";
+import { clearError, validateForm } from "./validation.js";
 
 const statusMessage = document.getElementById("status-message");
 const tableContainer = document.getElementById("table-container");
@@ -338,6 +338,7 @@ function closeModel() {
 
   submitbtn.dataset.id = "";
   submitbtn.textContent = "Enregistrer";
+  clearError();
 }
 
 function openModelForAdding() {
@@ -351,6 +352,7 @@ function openModelForAdding() {
   submitbtn.dataset.id = "";
   submitbtn.textContent = "ajouter";
 
+  clearError();
 }
 
 function showFeedback(message, type = "success") {

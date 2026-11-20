@@ -87,7 +87,7 @@ export function validateForm() {
   return true;
 }
 
-function clearError() {
+export function clearError() {
   const errorHTML = document.getElementById("form-error");
 
   if (!errorHTML) {
