@@ -29,6 +29,8 @@ export function validateForm() {
     .map((c) => c.trim())
     .filter(Boolean);
 
+  //validate empty fields
+
   if (
     !title ||
     !description ||
@@ -36,15 +38,56 @@ export function validateForm() {
     !releaseYear ||
     !image ||
     genres.length === 0 ||
-    directors=== 0 ||
+    directors === 0 ||
     productionCountries.length === 0
   ) {
     showError("tout les champs sont obligatoire");
     return false;
   }
+
+  //verify the year
+  const currantYear = new Date().getFullYear();
+  if (
+    Number.isNaN(releaseYear) ||
+    releaseYear < 1900 ||
+    releaseYear > currantYear
+  ) {
+    showError(`L'année doit être comprise entre 1900 et ${currantYear}.`);
+    return false;
+  }
+
+  //verify url
+  const regix = /^https?:\/\/[^\s/$.?#].[^\s]*$/i;
+  if (!regix.test(image)) {
+    showError(`incorrect img URL.`);
+    return false;
+  }
+
+  //verify the duration and seasns
+  if (type === "movie") {
+    const durationInput = document.getElementById("show-duration");
+    const duration = Number(durationInput.value);
+    if (!durationInput?.value || Number.isNaN(duration) || duration <= 0) {
+      showError("La durée du film doit être supérieure à 0 minute.");
+      return false;
+    }
+  } else if (type === "series") {
+    const seasonsInput = document.getElementById("show-seasons");
+    const seasonsCount = Number(seasonsInput?.value);
+    if (
+      !seasonsInput.value ||
+      Number.isNaN(seasonsCount) ||
+      seasonsCount < 1
+    ) {
+      showError("Le nombre de saisons doit être au moins 1.");
+      return false;
+    }
+  }
+
+  return true;
 }
 
-function clearError() {
+export function clearError() {
   const errorHTML = document.getElementById("form-error");
 
   if (!errorHTML) {
